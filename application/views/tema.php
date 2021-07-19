@@ -12,14 +12,14 @@
     <title>Azzainiyyah - MANKEU</title>
 
     <!-- Custom fonts for this template-->
-    <link href="<?php echo base_url('assets/theme/') ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo base_url('index.php/assets/theme/') ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo base_url('assets/theme/') ?>css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="<?php echo base_url('assets/theme/') ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?php echo base_url('index.php/assets/theme/') ?>css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo base_url('index.php/assets/theme/') ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
@@ -55,7 +55,7 @@
             <?php if ($this->ion_auth->logged_in()){ ?>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Welcome') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Welcome') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Beranda</span></a>
             </li>
@@ -69,14 +69,14 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Unit') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Unit') ?>">
                     <i class="fas fa-school"></i>
                     <span>Data Unit</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Angkatan') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Angkatan') ?>">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>Tahun Angkatan</span></a>
             </li>
@@ -84,27 +84,27 @@
 
                         <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Santri') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Santri') ?>">
                     <i class="fas fa-graduation-cap"></i>
                     <span>Data Santri</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Kategori') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Kategori') ?>">
                     <i class="fas fa-money-bill"></i>
                     <span>Kategori Pembayaran</span>
                 </a>
             </li>
                          <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Subkategori') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Subkategori') ?>">
                     <i class="fas fa-money-bill"></i>
                     <span>Sub-Kategori Pembayaran</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('TahunAjar') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/TahunAjar') ?>">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>Tahun Ajaran</span></a>
             </li>
@@ -115,7 +115,7 @@
             </div>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Auth/index') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Auth/index') ?>">
                     <i class="fas fa-user-shield"></i>
                     <span>Data Pengguna</span></a>
             </li>
@@ -134,17 +134,17 @@
             </div>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Transaksi/index') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Transaksi/index') ?>">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Transaksi</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Laporan/keuangan') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Laporan/keuangan') ?>">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Laporan Keuangan</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Laporan/santri') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Laporan/santri') ?>">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Laporan Data Santri</span></a>
             </li>
@@ -160,7 +160,7 @@
         <?php }else{
         ?>
                 <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Auth/login') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Auth/login') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Masuk</span></a>
             </li>
@@ -349,7 +349,7 @@
                         Tahun Ajaran Sekarang:<br/>
                         <?php echo ThAjar() ?>
                         
-                        [ <a href="<?php echo base_url('Pengaturan/update/1') ?>">Ubah</a> ]
+                        [ <a href="<?php echo base_url('index.php/Pengaturan/update/1') ?>">Ubah</a> ]
                     </p>
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -364,7 +364,7 @@
                                     echo $name; 
                                 ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="<?php echo base_url('assets/theme/') ?>img/undraw_profile.svg">
+                                    src="<?php echo base_url('index.php/assets/theme/') ?>img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -433,34 +433,34 @@
                 <div class="modal-body">Pilih "Keluar" Jika kamu ingin mengakhiri sesi ini.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="<?php echo base_url('Auth/logout') ?>">Keluar</a>
+                    <a class="btn btn-primary" href="<?php echo base_url('index.php/Auth/logout') ?>">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo base_url('assets/theme/') ?>vendor/jquery/jquery.min.js"></script>
-    <script src="<?php echo base_url('assets/theme/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url('index.php/assets/theme/') ?>vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url('index.php/assets/theme/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="<?= base_url('assets/theme/') ?>vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= base_url('index.php/assets/theme/') ?>vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo base_url('assets/theme/') ?>js/sb-admin-2.min.js"></script>
+    <script src="<?php echo base_url('index.php/assets/theme/') ?>js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="<?php echo base_url('assets/theme/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo base_url('assets/theme/') ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo base_url('index.php/assets/theme/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo base_url('index.php/assets/theme/') ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="<?php echo base_url('assets/theme/') ?>js/demo/datatables-demo.js"></script>
+    <script src="<?php echo base_url('index.php/assets/theme/') ?>js/demo/datatables-demo.js"></script>
 
     <!-- SweetAlert -->
-    <script src="<?= base_url('assets/sweetalert/')?>sweetalert2.all.min.js"></script>
+    <script src="<?= base_url('index.php/assets/sweetalert/')?>sweetalert2.all.min.js"></script>
 
     <!-- SweetAlert Customized -->
-    <script src="<?= base_url('assets/sweetalert/')?>customizedSA.js"></script>
+    <script src="<?= base_url('index.php/assets/sweetalert/')?>customizedSA.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
