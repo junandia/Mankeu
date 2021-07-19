@@ -1,0 +1,84 @@
+//SP Tagihan Cicilan
+CREATE DEFINER=`root`@`%` PROCEDURE `mankeu_dev`.`TAGIHAN_CICILAN`(santri_id INT)
+BEGIN
+	SELECT 
+		sk.id,
+		CONCAT(sk.nama_sub_kategori, '-', mu.nama_unit, '-', ta.tahun_angkatan,' ', taj.tahun_ajar) as sub_kategori,
+		taj.thajar_mulai ,
+		taj.thajar_selesai,
+		sk.nilai_bayar,
+		sk.pembayaran,
+		SUM(nominal_bayar) as sudah_bayar,
+		SUM(nominal_bayar-nilai_bayar) as sisa_angsuran
+	FROM
+	sub_kategori sk
+	LEFT JOIN santri s ON
+	sk.id_tahun_angkatan = s.id_angkatan
+	JOIN master_unit mu ON
+	mu.id = sk.id_unit 
+	JOIN tahun_angkatan ta ON
+	s.id_angkatan = ta.id 
+	JOIN tahun_ajaran taj ON
+	taj.id = sk.id_tahun_ajaran 
+	LEFT JOIN transaksi_detail td ON
+	td.id_sub_kategori = sk.id 
+ 	WHERE s.id = santri_id AND sk.pembayaran = 'CICIL'
+	;
+END
+
+
+//SP Tagihan
+CREATE DEFINER=`root`@`%` PROCEDURE `mankeu_dev`.`TAGIHAN`(id_tagihan INT, crbyr VARCHAR(25))
+BEGIN
+	SELECT
+	sk.id,
+	sk.nama_sub_kategori,
+	mu.nama_unit,
+	u.tahun_angkatan,
+	sk.nilai_bayar,
+	sk.pembayaran pembayaran 
+FROM
+	transaksi
+JOIN santri s ON
+	s.id = transaksi.id_santri
+JOIN sub_kategori sk ON
+	sk.id_unit = s.id_unit
+JOIN master_unit mu ON mu.id = sk.id_unit 
+JOIN tahun_angkatan u ON u.id = sk.id_tahun_angkatan 
+WHERE
+	transaksi.id = id_tagihan
+	AND sk.pembayaran = crbyr
+	AND sk.id NOT IN (
+	SELECT
+		td.id_sub_kategori
+	FROM
+		transaksi_detail td
+	WHERE
+		td.id_transaksi = transaksi.id);
+END
+
+
+//SP Tagihan Bulanan
+CREATE DEFINER=`root`@`%` PROCEDURE `mankeu_dev`.`TAGIHAN_BULANAN`(id_tagihan INT,
+santri_id INT)
+BEGIN
+	SELECT 
+		sk.id,
+		CONCAT(sk.nama_sub_kategori, '-', mu.nama_unit, '-', ta.tahun_angkatan,' ', taj.tahun_ajar) as sub_kategori,
+		taj.thajar_mulai ,
+		taj.thajar_selesai,
+		sk.nilai_bayar,
+		sk.pembayaran 
+	FROM
+	sub_kategori sk
+	LEFT JOIN santri s ON
+	sk.id_tahun_angkatan = s.id_angkatan
+	JOIN master_unit mu ON
+	mu.id = sk.id_unit 
+	JOIN tahun_angkatan ta ON
+	s.id_angkatan = ta.id 
+	JOIN tahun_ajaran taj ON
+	taj.id = sk.id_tahun_ajaran 
+ 	WHERE s.id = santri_id AND sk.pembayaran = 'BULANAN'
+	;
+END

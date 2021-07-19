@@ -51,33 +51,79 @@ function select2_dinamis($pk,$name,$table,$field,$placeholder){
     return $select2;
 }
 
-function get_nilai($id_siswa, $id_mapel, $type){
-    $nilai = 0;
-    $ci = get_instance();
+function kode_invoice($id_santri, $jenis_trx){
+    $tanggal = date('Ymdhis');
 
-    //$data = $ci->db->where('nilai', array('id_siswa' => $id_siswa, 'id_mapel' => $id_mapel), 1)->result();
-    $ci->db->where('id_siswa', $id_siswa);
-    $ci->db->where('id_mapel', $id_mapel);
-    $data = $ci->db->get('nilai')->result();
+    $kode = 'INV/'.$id_santri.'/'.$jenis_trx.'/'.$tanggal;
 
-    foreach ($data as $data) {
-        if ($type == 'nut') {
-            $nilai = $data->nut;
-        }elseif ($type == 'npu') {
-            $nilai = $data->npu;
-        }elseif ($type == 'nka') {
-            $nilai = $data->nka;
-        }else{
-            $nilai = 0;
-        }
-    }
-
-    return $nilai;
+    return $kode;
 }
 
-function ThAjar(){
+function ThAjar($id=null){
     $ci = get_instance();
     $ci->load->model('Tahun_ajaran_model');
-    $thajar = $ci->Tahun_ajaran_model->getActiveThAjar();
+    $thajar = $ci->Tahun_ajaran_model->getActiveThAjar($id);
     return $thajar;
+}
+
+function bulan($bulan_real){
+    $bulan = substr($bulan_real, 4);
+    $tahun = substr($bulan_real, 0, 4);
+    switch ($bulan) {
+        case '01':
+            $bulan = 'Januari '.$tahun;
+            break;
+        case '02':
+            $bulan = 'Februari '.$tahun;
+            break;
+        case '03':
+            $bulan = 'Maret '.$tahun;
+            break;
+        case '04':
+            $bulan = 'April '.$tahun;
+            break;
+        case '05':
+            $bulan = 'Mei '.$tahun;
+            break;
+        case '06':
+            $bulan = 'Juni '.$tahun;
+            break;
+        case '07':
+            $bulan = 'Juli '.$tahun;
+            break;
+        case '08':
+            $bulan = 'Agustus '.$tahun;
+            break;
+        case '09':
+            $bulan = 'September '.$tahun;
+            break;
+        case '10':
+            $bulan = 'Oktober '.$tahun;
+            break;
+        case '11':
+            $bulan = 'November '.$tahun;
+            break;
+        case '12':
+            $bulan = 'Desember '.$tahun;
+            break;
+        default:
+            $bulan = 'Tidak Ditemukan';
+            break;
+    }
+    return $bulan;
+}
+
+function terakhir_bayar($id_santri, $id_sk){
+    $ci = get_instance();
+    $ci->db->where('id_santri', $id_santri);
+    $ci->db->where('id_sub_kategori', $id_sk);
+    $ci->db->order_by('bulan_bayar', 'DESC');
+    $ci->db->limit(1);
+    $db = $ci->db->get('transaksi_detail')->row();
+    if ($db) {
+        $return = $db->bulan_bayar;
+    }else{
+        $return = null;
+    }
+    return $return;
 }

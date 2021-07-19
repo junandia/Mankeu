@@ -13,6 +13,7 @@
 	    <tr><td>Id Unit</td><td><?php echo $id_unit; ?></td></tr>
 	    <tr><td>Id Tahun Angkatan</td><td><?php echo $id_tahun_angkatan; ?></td></tr>
 	    <tr><td>Id Tahun Ajaran</td><td><?php echo $id_tahun_ajaran; ?></td></tr>
+	    <tr><td>Pembayaran</td><td><?php echo $pembayaran; ?></td></tr>
 	    <tr><td></td><td><a href="<?php echo site_url('subkategori') ?>" class="btn btn-default">Cancel</a></td></tr>
 	</table>
         </body>

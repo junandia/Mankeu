@@ -89,12 +89,17 @@
                     <span>Data Santri</span>
                 </a>
             </li>
-
-                         <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('SubKategori') ?>">
+                <a class="nav-link" href="<?php echo base_url('Kategori') ?>">
                     <i class="fas fa-money-bill"></i>
                     <span>Kategori Pembayaran</span>
+                </a>
+            </li>
+                         <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('Subkategori') ?>">
+                    <i class="fas fa-money-bill"></i>
+                    <span>Sub-Kategori Pembayaran</span>
                 </a>
             </li>
 
@@ -131,13 +136,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url('Transaksi/index') ?>">
                     <i class="fas fa-money-bill-wave"></i>
-                    <span>Transaksi Masuk</span></a>
+                    <span>Transaksi</span></a>
             </li>
-            <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Transaksi/outdex') ?>">
+                <a class="nav-link" href="<?php echo base_url('Laporan/keuangan') ?>">
                     <i class="fas fa-money-bill-wave"></i>
-                    <span>Transaksi Keluar</span></a>
+                    <span>Laporan Keuangan</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('Laporan/santri') ?>">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Laporan Data Santri</span></a>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

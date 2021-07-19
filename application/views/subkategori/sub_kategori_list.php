@@ -7,7 +7,7 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">KELOLA DATA SUB_KATEGORI</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">KELOLA DATA SUB KATEGORI</h6>
                         </div>
                         <div class="card-body">
  <div class="table w-100 p-3">
@@ -15,12 +15,13 @@
         <thead>
             <tr>
                 <th>No</th>
-		<th>Id Kategori</th>
+		<th>Kategori</th>
 		<th>Nama Sub Kategori</th>
 		<th>Nilai Bayar</th>
-		<th>Id Unit</th>
-		<th>Id Tahun Angkatan</th>
-		<th>Id Tahun Ajaran</th>
+		<th>Unit</th>
+		<th>Tahun Angkatan</th>
+		<th>Tahun Ajaran</th>
+		<th>Pembayaran</th>
 		<th>Action</th>
             </tr>
             
@@ -32,12 +33,13 @@
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $subkategori->id_kategori ?></td>
+			<td><?php echo $subkategori->nama_kategori ?></td>
 			<td><?php echo $subkategori->nama_sub_kategori ?></td>
 			<td><?php echo $subkategori->nilai_bayar ?></td>
-			<td><?php echo $subkategori->id_unit ?></td>
-			<td><?php echo $subkategori->id_tahun_angkatan ?></td>
-			<td><?php echo $subkategori->id_tahun_ajaran ?></td>
+			<td><?php echo $subkategori->nama_unit ?></td>
+			<td><?php echo $subkategori->tahun_angkatan ?></td>
+			<td><?php echo $subkategori->tahun_ajar ?></td>
+			<td><?php echo $subkategori->pembayaran ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('subkategori/read/'.$subkategori->id),'<i class="far fa-eye"></i>','class="btn btn-info btn-sm"'); 

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
 
 /*
 | -------------------------------------------------------------------
@@ -70,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'junandiaid';
+$active_group = 'default';
 $query_builder = TRUE;
 
 $db['junandiaid'] = array(
@@ -97,7 +97,7 @@ $db['junandiaid'] = array(
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost:3306',
+	'hostname' => 'localhost:3307',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'mankeu_dev',

@@ -14,6 +14,95 @@ class Transaksi extends CI_Controller
         $this->load->library('form_validation');
     }
 
+    public function outdexreal()
+    {
+        if($this->input->post()){
+            $invoice = kode_invoice($this->input->post('id_kategori'), $this->input->post('jenis_trx'));
+            $data = [
+                'jenis_trx' => $this->input->post('jenis_trx'),
+                'tahun_ajaran' => $this->input->post('tahun_ajaran'),
+                'status_trx' => 'SELESAI',
+                'kode_invoice' => $invoice
+            ];
+            $insert_data = $this->Transaksi_model->insert($data);
+
+            $detail = [
+                'id_transaksi' => $insert_data,
+                'id_kategori'  => $this->input->post('id_kategori'), 
+                'nominal_bayar'=> $this->input->post('nominal_bayar'),
+                'keterangan'   => $this->input->post('keterangan')
+            ];
+
+            $this->Transaksi_model->insert_detail($detail);
+
+            
+            redirect(site_url('Transaksi/read/'.$insert_data));
+        }else{
+            $data = [
+                'tahun_ajaran' => $this->Tahun_ajaran_model->getActiveThAjar(),
+                'disabled' => ''
+            ];
+            $return = $this->template->load('tema','transaksi/outdex', $data);
+        } 
+
+        return $return;
+    }
+
+    public function outdex()
+    {
+        if($this->input->post()){
+            $invoice = kode_invoice($this->input->post('id_santri'), $this->input->post('jenis_trx'));
+            $data = [
+                'jenis_trx' => $this->input->post('jenis_trx'),
+                'tahun_ajaran' => $this->input->post('tahun_ajaran'),
+                'id_santri'    => $this->input->post('id_santri'),
+                'status_trx' => 'PROSES',
+                'kode_invoice' => $invoice
+            ];
+
+            $insert_data = $this->Transaksi_model->insert($data);
+            redirect(site_url('Transaksi/step2/'.$insert_data));
+        }else{
+            $data = [
+                'tahun_ajaran' => $this->Tahun_ajaran_model->getActiveThAjar(),
+                'disabled' => ''
+            ];
+            $return = $this->template->load('tema','transaksi/index', $data);
+        } 
+
+        return $return;
+    }
+
+    public function step2($id)
+    {
+        $row = $this->Transaksi_model->get_by_id($id);
+        if ($row->status_trx == 'SELESAI' || $row->status_trx == 'BATAL') {
+            //$this->session->set_flashdata('message', 'Transaksi Sudah Selesai / Batal');
+            redirect(site_url('Transaksi'));
+        }
+        $id_santri = $this->Transaksi_model->id_santri($id);
+        $data = [
+            'tunggakan_bulanan' => $this->Transaksi_model->cek_tunggakan($id, 'BULANAN',$id_santri),
+            'tunggakan_tahunan' => $this->Transaksi_model->cek_tunggakan($id, 'TAHUNAN'),
+            'tunggakan_cicil'     => $this->Transaksi_model->cek_tunggakan($id, 'CICIL', $id_santri),
+            'tunggakan_sekali'  => $this->Transaksi_model->cek_tunggakan($id, 'SEKALI'),
+            'id_santri' => $id_santri,
+            'transaksi' => $this->Transaksi_model->get_by_id($id)
+        ];
+        $this->template->load('tema', 'transaksi/step2', $data);
+    }
+
+    public function proses()
+    {
+        $insert = $this->Transaksi_model->detail_insert();
+        if ($insert == 'sukses') {
+            echo "<script>alert('Berhasil')</script>";
+            redirect(site_url('transaksi'));
+        }else{
+            header("location:javascript://history.go(-1)");
+        }
+    }
+
     public function index()
     {
         $q = urldecode($this->input->get('q', TRUE));
@@ -51,113 +140,34 @@ class Transaksi extends CI_Controller
     public function read($id) 
     {
         $row = $this->Transaksi_model->get_by_id($id);
-        if ($row) {
+        if ($row->jenis_trx == 'IN') {
             $data = array('user' => $this->ion_auth->user()->row(),
-		'id' => $row->id,
-		'jenis_trx' => $row->jenis_trx,
-		'tanggal_trx' => $row->tanggal_trx,
-		'id_santri' => $row->id_santri,
-		'id_sub_kategori' => $row->id_sub_kategori,
-		'nilai_bayar' => $row->nilai_bayar,
-		'kode_invoice' => $row->kode_invoice,
-		'status_trx' => $row->status_trx,
+    		'id' => $row->id,
+    		'jenis_trx' => $row->jenis_trx,
+    		'tanggal_trx' => $row->tanggal_trx,
+    		'kode_invoice' => $row->kode_invoice,
+    		'status_trx' => $row->status_trx,
+    		'id_santri' => $row->nama_santri,
+            'tahun_angkatan' => $row->tahun_angkatan,
+            'detail_transaksi' => $this->Transaksi_model->getDetail($id, 'IN')
 	    );
-            $this->template->load('tema','transaksi/transaksi_read', $data);
+            $this->load->view('transaksi/invoice', $data);
+        } elseif ($row->jenis_trx == 'OUT'){
+            $data = array('user' => $this->ion_auth->user()->row(),
+                'id' => $row->id,
+                'jenis_trx' => $row->jenis_trx,
+                'tanggal_trx' => $row->tanggal_trx,
+                'kode_invoice' => $row->kode_invoice,
+                'status_trx' => $row->status_trx,
+                'detail_transaksi' => $this->Transaksi_model->getDetail($id, 'OUT')
+            );
+            $this->load->view('transaksi/outvoice', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('transaksi'));
         }
     }
 
-    public function create() 
-    {
-        $data = array(
-        'user' => $this->ion_auth->user()->row(),
-            'button' => 'Create',
-            'action' => site_url('transaksi/create_action'),
-	    'id' => set_value('id'),
-	    'jenis_trx' => set_value('jenis_trx'),
-	    'tanggal_trx' => set_value('tanggal_trx', date('Y-m-d')),
-	    'id_santri' => set_value('id_santri'),
-	    'id_sub_kategori' => set_value('id_sub_kategori'),
-	    'nilai_bayar' => set_value('nilai_bayar'),
-	    'kode_invoice' => set_value('kode_invoice'),
-	    'status_trx' => set_value('status_trx'),
-	);
-        $this->template->load('tema','transaksi/transaksi_form', $data);
-    }
-    
-    public function create_action() 
-    {
-        $this->_rules();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        } else {
-            $data = array(
-		'jenis_trx' => $this->input->post('jenis_trx',TRUE),
-		'tanggal_trx' => $this->input->post('tanggal_trx',TRUE),
-		'id_santri' => $this->input->post('id_santri',TRUE),
-		'id_sub_kategori' => $this->input->post('id_sub_kategori',TRUE),
-		'nilai_bayar' => $this->input->post('nilai_bayar',TRUE),
-		'kode_invoice' => $this->input->post('kode_invoice',TRUE),
-		'status_trx' => $this->input->post('status_trx',TRUE),
-	    );
-
-            $this->Transaksi_model->insert($data);
-            $this->session->set_flashdata('flash', 'Ditambahkan');
-            redirect(site_url('transaksi'));
-        }
-    }
-    
-    public function update($id) 
-    {
-        $row = $this->Transaksi_model->get_by_id($id);
-
-        if ($row) {
-            $data = array(
-            'user' => $this->ion_auth->user()->row(),
-                'button' => 'Update',
-                'action' => site_url('transaksi/update_action'),
-		'id' => set_value('id', $row->id),
-		'jenis_trx' => set_value('jenis_trx', $row->jenis_trx),
-		'tanggal_trx' => set_value('tanggal_trx', $row->tanggal_trx),
-		'id_santri' => set_value('id_santri', $row->id_santri),
-		'id_sub_kategori' => set_value('id_sub_kategori', $row->id_sub_kategori),
-		'nilai_bayar' => set_value('nilai_bayar', $row->nilai_bayar),
-		'kode_invoice' => set_value('kode_invoice', $row->kode_invoice),
-		'status_trx' => set_value('status_trx', $row->status_trx),
-	    );
-            $this->template->load('tema','transaksi/transaksi_form', $data);
-        } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('transaksi'));
-        }
-    }
-    
-    public function update_action() 
-    {
-        $this->_rules();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
-        } else {
-            $data = array(
-		'jenis_trx' => $this->input->post('jenis_trx',TRUE),
-		'tanggal_trx' => $this->input->post('tanggal_trx',TRUE),
-		'id_santri' => $this->input->post('id_santri',TRUE),
-		'id_sub_kategori' => $this->input->post('id_sub_kategori',TRUE),
-		'nilai_bayar' => $this->input->post('nilai_bayar',TRUE),
-		'kode_invoice' => $this->input->post('kode_invoice',TRUE),
-		'status_trx' => $this->input->post('status_trx',TRUE),
-	    );
-
-            $this->Transaksi_model->update($this->input->post('id', TRUE), $data);
-            $this->session->set_flashdata('flash', 'Diubah');
-            redirect(site_url('transaksi'));
-        }
-    }
-    
     public function delete($id) 
     {
         $row = $this->Transaksi_model->get_by_id($id);
@@ -176,40 +186,12 @@ class Transaksi extends CI_Controller
     {
 	$this->form_validation->set_rules('jenis_trx', 'jenis trx', 'trim|required');
 	$this->form_validation->set_rules('tanggal_trx', 'tanggal trx', 'trim|required');
-	$this->form_validation->set_rules('id_santri', 'id santri', 'trim|required');
-	$this->form_validation->set_rules('id_sub_kategori', 'id sub kategori', 'trim|required');
-	$this->form_validation->set_rules('nilai_bayar', 'nilai bayar', 'trim|required');
 	$this->form_validation->set_rules('kode_invoice', 'kode invoice', 'trim|required');
 	$this->form_validation->set_rules('status_trx', 'status trx', 'trim|required');
+	$this->form_validation->set_rules('id_santri', 'id santri', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-    }
-
-    public function outdex()
-    {
-        if($this->input->post()){
-            $data = [
-                'tahun_ajaran' => $this->input->post('tahun_ajaran'),
-                'id_santri'    => $this->input->post('id_santri')
-            ];
-
-            $this->Transaksi_model->save($data)
-            //$return = $this->template->load('tema','transaksi/index', $data);
-        }else{
-            $data = [
-                'tahun_ajaran' => $this->Tahun_ajaran_model->getActiveThAjar(),
-                'disabled' => ''
-            ];
-            $return = $this->template->load('tema','transaksi/index', $data);
-        } 
-
-        return $return;
-    }
-
-    public function step2($id)
-    {
-        return $id;
     }
 
 }
@@ -217,5 +199,5 @@ class Transaksi extends CI_Controller
 /* End of file Transaksi.php */
 /* Location: ./application/controllers/Transaksi.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-13 11:09:08 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-16 11:03:07 */
 /* http://harviacode.com */

@@ -11,16 +11,21 @@
                             </div>
                             <div class="card-body">
                              <div class="w-100 p-3">
-                                <?php echo form_open('Transaksi/outdex', ['method' => 'POST']); ?>
+                                <?php echo form_open('Transaksi/outdexreal', ['method' => 'POST']); ?>
                                 <table class="table">
                                     <tr>
                                         <td>Jenis Transaksi</td>
                                         <td>:</td>
                                         <td>
-                                            <select name="jenis_trx" class="form-control">
-                                                <option value="IN">Pemasukan</option>
+                                            <select name="jenis_trx" class="form-control" required="">
+                                                <option value="OUT">Pengeluaran</option>
                                             </select>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="200">Kategori</td>
+                                        <td>:</td>
+                                        <td><?php echo cmb_dinamis('id_kategori', 'kategori_pembayaran', 'nama_kategori', 'id') ?></td>
                                     </tr>
                                     <tr>
                                         <td width="200">Tahun Ajaran</td>
@@ -28,12 +33,17 @@
                                         <td><?php echo cmb_dinamis('tahun_ajaran', 'tahun_ajaran', 'tahun_ajar', 'id', $tahun_ajaran, 'DESC', $disabled) ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Nama Santri</td>
+                                        <td>Nominal Bayar</td>
                                         <td>:</td>
-                                        <td><?php echo select2_dinamis('id','id_santri','santri','nama_santri','Masukan Nama Santri', $disabled) ?></td>
+                                        <td><input type="number" name="nominal_bayar" min="1" class="form-control" required=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keterangan</td>
+                                        <td>:</td>
+                                        <td><textarea class="form-control" name="keterangan"></textarea></td>
                                     </tr>
                                     <tr align="right">
-                                        <td colspan="3"><input type="submit" name="submit" class="btn btn-primary" value="Cek Tagihan"></td>
+                                        <td colspan="3"><input type="submit" name="submit" class="btn btn-primary" value="Buat Transaksi" ></td>
                                     </tr>
                                 </table>
                                 <?php echo form_close(); ?>

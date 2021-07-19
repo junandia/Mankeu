@@ -74,13 +74,21 @@ class Tahun_ajaran_model extends CI_Model
         $this->db->delete($this->table);
     }
 
-    function getActiveThAjar()
+    function getActiveThAjar($id = null)
     {
-        $this->db->join('pengaturan', 'pengaturan.tahun_ajaran = tahun_ajaran.id');
-        $this->db->where('pengaturan.id', 1);
-        $thajar = $this->db->get($this->table)->row();
+        if ($id != null) {
+            $this->db->where('id', $id);
+            $thajar = $this->db->get($this->table)->row();    
+            $return = $thajar->thajar_mulai;  
+        }else{
+            $this->db->join('pengaturan', 'pengaturan.tahun_ajaran = tahun_ajaran.id');
+            $this->db->where('pengaturan.id', 1); 
+            $thajar = $this->db->get($this->table)->row();    
+            $return = $thajar->tahun_ajar;       
+        }
+       
 
-        return $thajar->tahun_ajar;
+        return $return;
     }
 
 }

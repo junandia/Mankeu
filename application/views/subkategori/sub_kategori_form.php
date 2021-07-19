@@ -15,6 +15,7 @@
 	    <tr><td width='200'>Id Unit <?php echo form_error('id_unit') ?></td><td><input type="text" class="form-control" name="id_unit" id="id_unit" placeholder="Id Unit" value="<?php echo $id_unit; ?>" /></td></tr>
 	    <tr><td width='200'>Id Tahun Angkatan <?php echo form_error('id_tahun_angkatan') ?></td><td><input type="text" class="form-control" name="id_tahun_angkatan" id="id_tahun_angkatan" placeholder="Id Tahun Angkatan" value="<?php echo $id_tahun_angkatan; ?>" /></td></tr>
 	    <tr><td width='200'>Id Tahun Ajaran <?php echo form_error('id_tahun_ajaran') ?></td><td><input type="text" class="form-control" name="id_tahun_ajaran" id="id_tahun_ajaran" placeholder="Id Tahun Ajaran" value="<?php echo $id_tahun_ajaran; ?>" /></td></tr>
+	    <tr><td width='200'>Pembayaran <?php echo form_error('pembayaran') ?></td><td><input type="text" class="form-control" name="pembayaran" id="pembayaran" placeholder="Pembayaran" value="<?php echo $pembayaran; ?>" /></td></tr>
 	    <tr><td></td><td><input type="hidden" name="id" value="<?php echo $id; ?>" /> 
 	    <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
 	    <a href="<?php echo site_url('subkategori') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a></td></tr>

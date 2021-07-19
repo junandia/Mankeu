@@ -25,7 +25,11 @@ class Transaksi_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
+        $this->db->select('transaksi.*, santri.nama_santri, tahun_ajaran.tahun_ajar, tahun_angkatan.tahun_angkatan');
+        $this->db->join('santri', 'santri.id = transaksi.id_santri', 'left');
+        $this->db->join('tahun_angkatan', 'santri.id_angkatan = tahun_angkatan.id', 'left');
+        $this->db->join('tahun_ajaran', 'tahun_ajaran.id = transaksi.tahun_ajaran', 'left');
+        $this->db->where('transaksi.'.$this->id, $id);
         return $this->db->get($this->table)->row();
     }
     
@@ -34,11 +38,9 @@ class Transaksi_model extends CI_Model
         $this->db->like('id', $q);
 	$this->db->or_like('jenis_trx', $q);
 	$this->db->or_like('tanggal_trx', $q);
-	$this->db->or_like('id_santri', $q);
-	$this->db->or_like('id_sub_kategori', $q);
-	$this->db->or_like('nilai_bayar', $q);
 	$this->db->or_like('kode_invoice', $q);
 	$this->db->or_like('status_trx', $q);
+	$this->db->or_like('id_santri', $q);
 	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
@@ -46,15 +48,14 @@ class Transaksi_model extends CI_Model
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
-        $this->db->like('id', $q);
-	$this->db->or_like('jenis_trx', $q);
-	$this->db->or_like('tanggal_trx', $q);
-	$this->db->or_like('id_santri', $q);
-	$this->db->or_like('id_sub_kategori', $q);
-	$this->db->or_like('nilai_bayar', $q);
-	$this->db->or_like('kode_invoice', $q);
-	$this->db->or_like('status_trx', $q);
-	$this->db->limit($limit, $start);
+        //    $this->db->like('id', $q);
+    	//$this->db->or_like('jenis_trx', $q);
+    	//$this->db->or_like('tanggal_trx', $q);
+    	//$this->db->or_like('kode_invoice', $q);
+    	//$this->db->or_like('status_trx', $q);
+    	//$this->db->or_like('id_santri', $q);
+        $this->db->where_in('status_trx', ['SELESAI', 'BATAL']);
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 
@@ -62,6 +63,9 @@ class Transaksi_model extends CI_Model
     function insert($data)
     {
         $this->db->insert($this->table, $data);
+        $insert_id = $this->db->insert_id();
+
+        return  $insert_id;
     }
 
     // update data
@@ -75,7 +79,77 @@ class Transaksi_model extends CI_Model
     function delete($id)
     {
         $this->db->where($this->id, $id);
-        $this->db->delete($this->table);
+        //$this->db->delete($this->table);
+        $this->db->update($this->table, ['status_trx' => 'BATAL']);
+    }
+
+    function cek_tunggakan($id, $pembayaran, $id_santri=null){
+        if ($pembayaran == 'BULANAN') {
+            $query = $this->db->query('CALL TAGIHAN_BULANAN('.$id.',"'.$id_santri.'")');
+        }elseif($pembayaran == 'CICIL') {
+            $query = $this->db->query('CALL TAGIHAN_CICILAN('.$id_santri.')');
+        }else{
+            $query = $this->db->query('CALL TAGIHAN('.$id.',"'.$pembayaran.'")');
+        }
+        $query->next_result(); 
+        return $query->result();
+
+    }
+
+    function id_santri($id){
+        $this->db->where('transaksi.'.$this->id, $id);
+        $data = $this->db->get($this->table)->row();
+        return $data->id_santri;
+    }
+
+    function detail_insert()
+    {
+        $this->db->trans_start();
+        $insert_data = array();
+        $field_data = $this->input->post('bayar');
+
+        for($i = 0; $i < count($field_data); $i++)
+        {
+            if ($field_data[$i] == 'BAYAR') {
+                $insert_data[] = array(
+                    'id_transaksi' => $_POST['id_transaksi'][$i],
+                    'id_sub_kategori' => $_POST['id_sub_kategori'][$i],
+                    'nominal_bayar' => $_POST['nominal_bayar'][$i],
+                    'bulan_bayar' => $_POST['bulan_bayar'][$i],
+                    'id_santri' => $_POST['id_santri'][$i]
+                );
+            }
+        }
+        if(count($insert_data) > 0){
+            $query = $this->db->insert_batch('transaksi_detail', $insert_data);
+        }else{
+            header("location:javascript://history.go(-1)");
+        } 
+        $this->db->trans_complete();
+
+        if ($query) {
+            $this->db->where($this->id, $_POST['id_transaksi'][0]);
+            $this->db->update($this->table, ['status_trx' => 'SELESAI']);
+            return 'sukses';
+        }else{
+            return 'gagal';
+            header("location:javascript://history.go(-1)");
+        }
+    }
+
+    function insert_detail($data){
+        $this->db->insert('transaksi_detail', $data);
+    }
+
+    function getDetail($id,$jenis_trx){
+        if ($jenis_trx == 'IN') {
+            $this->db->join('sub_kategori', 'sub_kategori.id = transaksi_detail.id_sub_kategori');
+        }elseif ($jenis_trx == 'OUT') {
+            $this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = transaksi_detail.id_kategori');
+        }
+        $this->db->where('id_transaksi', $id);
+        $this->db->where('deleted_at', null);
+        return $this->db->get('transaksi_detail')->result();
     }
 
 }
@@ -83,5 +157,5 @@ class Transaksi_model extends CI_Model
 /* End of file Transaksi_model.php */
 /* Location: ./application/models/Transaksi_model.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-13 11:09:08 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-16 11:03:07 */
 /* http://harviacode.com */
