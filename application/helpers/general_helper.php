@@ -12,32 +12,46 @@ function cmb_dinamis($name,$table,$field,$pk,$selected=null,$order=null, $disabl
     if($order){
         $ci->db->order_by($field,$order);
     }
+    if ($table == 'groups') {
+        $ci->db->where_not_in('groups.id', '1');
+    }
     $data = $ci->db->get($table)->result();
     foreach ($data as $d){
+        if($name == 'tahun_ajaran'){
+            $dfield = $d->$field.' - '.strtoupper($d->semester);
+        }else{
+            $dfield = $d->$field;
+        }
         $cmb .="<option value='".$d->$pk."'";
         $cmb .= $selected==$d->$pk?" selected='selected'":'';
-        $cmb .=">".  strtoupper($d->$field)."</option>";
+        $cmb .=">".  strtoupper($dfield)."</option>";
     }
     $cmb .="</select>";
     return $cmb;  
 }
 
-function select2_santri($pk,$name,$table,$field,$placeholder,$unit=null){
+function select2_santri($pk,$name,$table,$field,$placeholder,$disabled,$unit=null){
     $ci = get_instance();
-    $select2 = '<select class="js-example-basic-single w-100 p-3" name="'.$name.'" '.$disabled.'>';
-    $ci->db->select('santri.*, master_unit.nama_unit, tahun_angkatan.tahun_angkatan');
-    $ci->db->join('master_unit', 'master_unit.id = santri.id_unit');
-    $ci->db->join('tahun_angkatan', 'tahun_angkatan.id = santri.id_angkatan');
-    if ($unit != null) {
-        $ci->db->where('id_unit', $unit);
+    
+    $group = $ci->ion_auth->get_users_groups($ci->ion_auth->user()->row()->id)->result();
+    $groups = array();
+    foreach ($group as $value) {
+        $groups[] = (int)$value->id;
     }
+    //var_dump($groups);
+    $select2 = '<select class="js-santri w-100 p-3" name="'.$name.'" '.$disabled.'>';
+    $ci->db->select('santri.*, tahun_angkatan.tahun_angkatan');
+    $ci->db->join('tahun_angkatan', 'tahun_angkatan.id = santri.id_angkatan');
+    $ci->db->join('groups', 'groups.id = tahun_angkatan.id_grup');
+    $ci->db->where_in('groups.id', $groups);
 
     $data = $ci->db->get($table)->result();
     foreach ($data as $row){
-        $select2.= ' <option value='.$row->$pk.'>'.$row->$field.' - '.$row->tahun_angkatan.'</option>';
+        $select2.= ' <option value='.$row->$pk.'>'.$row->$field.'</option>';
     }
     $select2 .='</select>';
     return $select2;
+
 }
 
 function select2_dinamis($pk,$name,$table,$field,$placeholder){
@@ -46,6 +60,26 @@ function select2_dinamis($pk,$name,$table,$field,$placeholder){
     $data = $ci->db->get($table)->result();
     foreach ($data as $row){
         $select2.= ' <option value='.$row->$pk.'>'.$row->$field.'</option>';
+    }
+    $select2 .='</select>';
+    return $select2;
+}
+
+function select2_transaksi($pk,$name,$table,$field,$placeholder){
+    $ci = get_instance();
+    $group = $ci->ion_auth->get_users_groups($ci->ion_auth->user()->row()->id)->result();
+    $groups = array();
+    foreach ($group as $value) {
+        $groups[] = (int)$value->id;
+    }
+    $select2 = '<select class="js-example-basic-single w-100 p-3" id="'.$name.'" name="'.$name.'" required>';
+    $ci->db->select('sub_kategori.*');
+    $ci->db->join('groups', 'groups.id = sub_kategori.id_tahun_angkatan');
+    $ci->db->where_in('groups.id', $groups);
+    $data = $ci->db->get($table)->result();
+    $select2 .= '<option></option>';
+    foreach ($data as $row){
+        $select2.= ' <option value='.$row->$pk.'>'.$row->$field.' - Rp.'.number_format($row->nilai_bayar).'</option>';
     }
     $select2 .='</select>';
     return $select2;

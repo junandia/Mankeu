@@ -26,7 +26,8 @@ class Transaksi_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->select('transaksi.*, santri.nama_santri, tahun_ajaran.tahun_ajar, tahun_angkatan.tahun_angkatan');
-        $this->db->join('santri', 'santri.id = transaksi.id_santri', 'left');
+        $this->db->join('transaksi_detail_v2', 'transaksi_detail_v2.id_transaksi = transaksi.id', 'left');
+        $this->db->join('santri', 'santri.id = transaksi_detail_v2.id_santri', 'left');
         $this->db->join('tahun_angkatan', 'santri.id_angkatan = tahun_angkatan.id', 'left');
         $this->db->join('tahun_ajaran', 'tahun_ajaran.id = transaksi.tahun_ajaran', 'left');
         $this->db->where('transaksi.'.$this->id, $id);
@@ -40,7 +41,6 @@ class Transaksi_model extends CI_Model
 	$this->db->or_like('tanggal_trx', $q);
 	$this->db->or_like('kode_invoice', $q);
 	$this->db->or_like('status_trx', $q);
-	$this->db->or_like('id_santri', $q);
 	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
@@ -54,9 +54,17 @@ class Transaksi_model extends CI_Model
     	//$this->db->or_like('kode_invoice', $q);
     	//$this->db->or_like('status_trx', $q);
     	//$this->db->or_like('id_santri', $q);
-        $this->db->where_in('status_trx', ['SELESAI', 'BATAL']);
+        //$this->db->where_in('status_trx', ['SELESAI', 'BATAL','PENDING']);
+        if (!$this->ion_auth->is_admin()) {
+            $this->db->where('id_user', $this->ion_auth->user()->row()->id);
+        }
     	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
+    }
+
+    function done($id){
+        $this->db->where($this->id, $id);
+        $this->db->update($this->table, ['status_trx' => 'SELESAI']);
     }
 
     // insert data
@@ -85,14 +93,14 @@ class Transaksi_model extends CI_Model
 
     function cek_tunggakan($id, $pembayaran, $id_santri=null){
         if ($pembayaran == 'BULANAN') {
-            $query = $this->db->query('CALL TAGIHAN_BULANAN('.$id.',"'.$id_santri.'")');
+            //$query = $this->db->query('CALL TAGIHAN_BULANAN('.$id.',"'.$id_santri.'")');
         }elseif($pembayaran == 'CICIL') {
-            $query = $this->db->query('CALL TAGIHAN_CICILAN('.$id_santri.')');
+            //$query = $this->db->query('CALL TAGIHAN_CICILAN('.$id_santri.')');
         }else{
-            $query = $this->db->query('CALL TAGIHAN('.$id.',"'.$pembayaran.'")');
+            //$query = $this->db->query('CALL TAGIHAN('.$id.',"'.$pembayaran.'")');
         }
-        $query->next_result(); 
-        return $query->result();
+        //$query->next_result(); 
+        //return $query->result();
 
     }
 
@@ -137,19 +145,29 @@ class Transaksi_model extends CI_Model
         }
     }
 
-    function insert_detail($data){
-        $this->db->insert('transaksi_detail', $data);
+    function insert_detail($tabel,$data){
+        $this->db->insert($tabel, $data);
     }
 
     function getDetail($id,$jenis_trx){
+            $this->db->where('id_transaksi', $id);
         if ($jenis_trx == 'IN') {
-            $this->db->join('sub_kategori', 'sub_kategori.id = transaksi_detail.id_sub_kategori');
+            $this->db->join('sub_kategori', 'sub_kategori.id = transaksi_detail_v2.id_sub_kategori');
+            $this->db->join('master_bulan', 'master_bulan.id = transaksi_detail_v2.id_bulan');
+            return $this->db->get('transaksi_detail_v2')->result();
         }elseif ($jenis_trx == 'OUT') {
             $this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = transaksi_detail.id_kategori');
+            return $this->db->get('pengeluaran_detail_v2')->result();
         }
+        
+    }
+
+    function get_detail_v2($id){
         $this->db->where('id_transaksi', $id);
-        $this->db->where('deleted_at', null);
-        return $this->db->get('transaksi_detail')->result();
+        $this->db->select('nama_kategori,nama_sub_kategori,nilai_bayar,nominal_bayar');
+        $this->db->join('sub_kategori', 'sub_kategori.id = transaksi_detail_v2.id_sub_kategori');
+        $this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = sub_kategori.id_kategori');
+        return $this->db->get('transaksi_detail_v2')->result();
     }
 
 }

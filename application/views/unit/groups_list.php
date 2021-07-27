@@ -7,7 +7,7 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">KELOLA DATA MASTER_UNIT</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">KELOLA DATA GROUPS</h6>
                         </div>
                         <div class="card-body">
  <div class="table w-100 p-3">
@@ -15,7 +15,8 @@
         <thead>
             <tr>
                 <th>No</th>
-		<th>Nama Unit</th>
+		<th>Name</th>
+		<th>Description</th>
 		<th>Action</th>
             </tr>
             
@@ -27,9 +28,12 @@
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $unit->nama_unit ?></td>
+			<td><?php echo $unit->name ?></td>
+			<td><?php echo $unit->description ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
+				echo anchor(site_url('unit/read/'.$unit->id),'<i class="far fa-eye"></i>','class="btn btn-info btn-sm"'); 
+				echo '  '; 
 				echo anchor(site_url('unit/update/'.$unit->id),'<i class="fas fa-pen"></i>','class="btn btn-warning btn-sm"'); 
 				echo '  '; 
 				echo anchor(site_url('unit/delete/'.$unit->id),'<i class="fas fa-trash"></i>','class="btn btn-danger btn-sm tombol-hapus"'); 

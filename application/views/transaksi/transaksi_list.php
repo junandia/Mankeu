@@ -37,7 +37,13 @@
 			<td><?php echo $transaksi->kode_invoice ?></td>
 			<td><?php echo $transaksi->status_trx ?></td>
 			<td style="text-align:center" width="200px">
-				<?php 
+				<?php
+                if ($transaksi->jenis_trx == 'IN' && $transaksi->status_trx == 'PROSES') {
+                $inv = explode('/', $transaksi->kode_invoice);
+
+                echo anchor(site_url('Transaksi/step2/'.$transaksi->id.'/'.$inv[1]),'<i class="fas fa-check"></i> Lanjutkan','class="btn btn-success btn-sm"');
+                 } 
+                echo '  ';
 				echo ($transaksi->status_trx == 'SELESAI') ? anchor(site_url('transaksi/read/'.$transaksi->id),'<i class="fas fa-print"></i> Cetak','class="btn btn-info btn-sm"') : ''; 
 				echo '  '; 
 				echo ($transaksi->status_trx != 'BATAL') ? anchor(site_url('transaksi/delete/'.$transaksi->id),'<i class="fas fa-user-times"></i> Batal','class="btn btn-danger btn-sm tombol-konfirmasi"') : ''; 

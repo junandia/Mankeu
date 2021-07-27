@@ -104,7 +104,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('index.php/TahunAjar') ?>">
+                <a class="nav-link" href="<?php echo base_url('index.php/Tahun_ajaran') ?>">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>Tahun Ajaran</span></a>
             </li>
@@ -121,14 +121,8 @@
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
-
-            <?php
-             }
-                $group = array(3, 2);
-                if ($this->ion_auth->in_group($group)) {
-                    # code...
-                    ?>
-                     <!-- Divider -->
+            <?php } ?>
+            <!-- Divider -->
             <div class="sidebar-heading">
                 Transaksi
             </div>
@@ -138,6 +132,10 @@
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Transaksi</span></a>
             </li>
+            <?php if($this->ion_auth->in_group(12)){ ?>
+            <div class="sidebar-heading">
+                Laporan
+            </div>
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url('index.php/Laporan/keuangan') ?>">
                     <i class="fas fa-money-bill-wave"></i>
@@ -151,20 +149,18 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <?php
-                            }
+                       }     }else{
             ?>
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-        <?php }else{
-        ?>
                 <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url('index.php/Auth/login') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Masuk</span></a>
             </li>
         <?php } ?>
+        <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
         </ul>
         <!-- End of Sidebar -->
 
@@ -466,9 +462,34 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-        $('.js-example-basic-single').select2();
-    });
-</script>
+            $('.js-santri').select2();
+        });
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2({
+                placeholder: "Silahkan pilih disini"
+            });
+        });
+        <?php 
+            if ($this->uri->segment(2) == 'step2') {
+         ?>
+         $("#id_sub_kategori").change(function(){
+
+            var id_sub = $("#id_sub_kategori").val();
+
+            // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+            $.ajax({
+                type: "POST",
+                dataType: "html",
+                url: '<?php echo base_url('Transaksi/bulan/'.$transaksi->id.'/'.$id_santri.'/') ?>'+id_sub,
+                //data: "sub_kategori="+id_sub,
+                success: function(data){
+                   $("#bulan").html(data);
+                 }
+            });
+        });
+        <?php } ?>
+    </script>
 </body>
 
 </html>

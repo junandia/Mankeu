@@ -8,6 +8,7 @@
         <h2 style="margin-top:0px">Tahun_angkatan Read</h2>
         <table class="table">
 	    <tr><td>Tahun Angkatan</td><td><?php echo $tahun_angkatan; ?></td></tr>
+	    <tr><td>Id Grup</td><td><?php echo $id_grup; ?></td></tr>
 	    <tr><td></td><td><a href="<?php echo site_url('angkatan') ?>" class="btn btn-default">Cancel</a></td></tr>
 	</table>
         </body>

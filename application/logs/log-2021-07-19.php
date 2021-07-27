@@ -193,3 +193,15 @@ ERROR - 2021-07-19 03:44:42 --> Severity: Warning --> Undefined property: stdCla
 ERROR - 2021-07-19 03:44:42 --> Severity: Warning --> Undefined property: stdClass::$nama_kategori /opt/applications/apache2/htdocs/Projects/azzay/mankeu/application/views/subkategori/sub_kategori_list.php 36
 ERROR - 2021-07-19 03:44:42 --> Severity: Warning --> Undefined property: stdClass::$nama_kategori /opt/applications/apache2/htdocs/Projects/azzay/mankeu/application/views/subkategori/sub_kategori_list.php 36
 ERROR - 2021-07-19 03:44:42 --> Severity: Warning --> Undefined property: stdClass::$nama_kategori /opt/applications/apache2/htdocs/Projects/azzay/mankeu/application/views/subkategori/sub_kategori_list.php 36
+ERROR - 2021-07-19 11:14:00 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:14:07 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:15:17 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:17:07 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:19:07 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:19:16 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:19:43 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:19:58 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:20:04 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:20:55 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:21:08 --> 404 Page Not Found: Assets/theme
+ERROR - 2021-07-19 11:21:15 --> 404 Page Not Found: Assets/theme

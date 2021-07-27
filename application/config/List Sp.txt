@@ -1,3 +1,28 @@
+select
+	kp.nama_kategori ,
+	IFNULL((
+	select
+		SUM(nominal_bayar)
+	from
+		transaksi_detail_v2 tdv
+	join sub_kategori sk on
+		sk.id_kategori = kp.id
+	where
+		sk.id_kategori = kp.id),0) as pemasukan,
+		IFNULL((
+	select
+		SUM(nominal_bayar)
+	from
+		transaksi_detail_v2 tdv
+	join sub_kategori sk on
+		sk.id_kategori = kp.id
+	where
+		sk.id_kategori = kp.id),0) as pengeluaran
+from
+	kategori_pembayaran kp
+
+	
+
 //SP Tagihan Cicilan
 CREATE DEFINER=`root`@`%` PROCEDURE `mankeu_dev`.`TAGIHAN_CICILAN`(santri_id INT)
 BEGIN

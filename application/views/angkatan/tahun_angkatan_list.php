@@ -16,6 +16,7 @@
             <tr>
                 <th>No</th>
 		<th>Tahun Angkatan</th>
+		<th>Id Grup</th>
 		<th>Action</th>
             </tr>
             
@@ -28,8 +29,11 @@
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $angkatan->tahun_angkatan ?></td>
+			<td><?php echo $angkatan->description ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
+				echo anchor(site_url('angkatan/read/'.$angkatan->id),'<i class="far fa-eye"></i>','class="btn btn-info btn-sm"'); 
+				echo '  '; 
 				echo anchor(site_url('angkatan/update/'.$angkatan->id),'<i class="fas fa-pen"></i>','class="btn btn-warning btn-sm"'); 
 				echo '  '; 
 				echo anchor(site_url('angkatan/delete/'.$angkatan->id),'<i class="fas fa-trash"></i>','class="btn btn-danger btn-sm tombol-hapus"'); 

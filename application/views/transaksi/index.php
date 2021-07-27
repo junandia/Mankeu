@@ -30,10 +30,10 @@
                                     <tr>
                                         <td>Nama Santri</td>
                                         <td>:</td>
-                                        <td><?php echo select2_dinamis('id','id_santri','santri','nama_santri','Masukan Nama Santri', $disabled) ?></td>
+                                        <td><?php echo select2_santri('id','id_santri','santri','nama_santri','Masukan Nama Santri', $disabled) ?></td>
                                     </tr>
                                     <tr align="right">
-                                        <td colspan="3"><input type="submit" name="submit" class="btn btn-primary" value="Cek Tagihan"></td>
+                                        <td colspan="3"><input type="submit" name="submit" class="btn btn-primary" value="Buat Tagihan"></td>
                                     </tr>
                                 </table>
                                 <?php echo form_close(); ?>

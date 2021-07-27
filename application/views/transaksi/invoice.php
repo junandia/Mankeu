@@ -246,7 +246,7 @@
                         ?>
                         <tr>
                             <td class="no"><?php echo $data_transaksi->id_sub_kategori ?></td>
-                            <td class="text-left"><h3><?php echo $data_transaksi->nama_sub_kategori ?></h3><?php echo bulan(date('Ym', strtotime($data_transaksi->bulan_bayar))) ?></td>
+                            <td class="text-left"><h3><?php echo $data_transaksi->nama_sub_kategori ?></h3><?php echo ($data_transaksi->pembayaran == 'BULANAN') ? $data_transaksi->nama_bulan : '' ?></td>
                             <td class="unit">Rp. <?php echo number_format($data_transaksi->nilai_bayar) ?></td>
                             <td class="qty"><?php echo ($data_transaksi->pembayaran == 'CICIL') ? 'Bisa Dicicil' : $data_transaksi->pembayaran; ?></td>
                             <td class="total">Rp. <?php echo number_format($data_transaksi->nominal_bayar) ?> </td>

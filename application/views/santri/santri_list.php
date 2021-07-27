@@ -16,7 +16,7 @@
             <tr>
                 <th>No</th>
 		<th>Nama Santri</th>
-		<th>Unit</th>
+        <th>Unit</th>
 		<th>Angkatan</th>
 		<th>Action</th>
             </tr>
@@ -30,8 +30,8 @@
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $santri->nama_santri ?></td>
-			<td><?php echo $santri->nama_unit ?></td>
-			<td><?php echo $santri->tahun_angkatan ?></td>
+			<td><?php echo $santri->name ?></td>
+            <td><?php echo $santri->tahun_angkatan ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('santri/read/'.$santri->id),'<i class="far fa-eye"></i>','class="btn btn-info btn-sm"'); 

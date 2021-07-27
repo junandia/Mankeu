@@ -8,10 +8,12 @@
 		function __construct()
 		{
 			parent::__construct();
+			$this->load->model('Laporan_model');
 		}
 
 		function keuangan(){
-			$this->template->load('tema','laporan/keuangan');
+			
+			//$this->template->load('tema','laporan/keuangan');
 		}
 
 
