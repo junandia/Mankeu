@@ -98,7 +98,7 @@
                             <td><textarea name="catatan" class="form-control" required placeholder="Masukan Catatan"></textarea></td>
                         </tr>
                         <tr align="right">
-                            <th colspan="5"><input type="submit" name="simpan" value="Tambah" class="btn btn-primary"> <a href="<?php echo base_url('Transaksi/done/'.$transaksi->id) ?>" class="btn btn-warning" onclick="return confirm('Anda Yakin?');">Selesaikan Transaksi</a></th>
+                            <th colspan="5"><input type="submit" name="simpan" value="Tambah" class="btn btn-primary"> <a href="<?php echo base_url('index.php/Transaksi/done/'.$transaksi->id) ?>" class="btn btn-warning" onclick="return confirm('Anda Yakin?');">Selesaikan Transaksi</a></th>
                         </tr>
                     </table>
                     <?php echo form_close() ?>
