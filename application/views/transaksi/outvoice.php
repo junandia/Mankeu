@@ -248,7 +248,7 @@
                         ?>
                         <tr>
                             <td class="no"><?php echo $data_transaksi->id_kategori ?></td>
-                            <td class="text-left"><h3><?php echo $data_transaksi->nama_kategori ?></h3><?php echo $data_transaksi->keterangan ?></td>
+                            <td class="text-left"><h3><?php echo $data_transaksi->nama_kategori ?></h3><?php echo $data_transaksi->catatan ?></td>
                             <!--<td class="unit">Rp. <?php echo number_format($data_transaksi->nilai_bayar) ?></td> -->
                             <!--<td class="qty"><?php echo ($data_transaksi->pembayaran == 'CICIL') ? 'Bisa Dicicil' : $data_transaksi->pembayaran; ?></td> -->
                             <td class="total">Rp. <?php echo number_format($data_transaksi->nominal_bayar) ?> </td>

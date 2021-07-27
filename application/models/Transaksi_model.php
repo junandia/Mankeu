@@ -150,15 +150,17 @@ class Transaksi_model extends CI_Model
     }
 
     function getDetail($id,$jenis_trx){
-            $this->db->where('id_transaksi', $id);
         if ($jenis_trx == 'IN') {
+            $this->db->join('transaksi_detail_v2','transaksi_detail_v2.id_transaksi = transaksi.id');
             $this->db->join('sub_kategori', 'sub_kategori.id = transaksi_detail_v2.id_sub_kategori');
-            $this->db->join('master_bulan', 'master_bulan.id = transaksi_detail_v2.id_bulan');
-            return $this->db->get('transaksi_detail_v2')->result();
+            $this->db->join('master_bulan', 'master_bulan.id = transaksi_detail_v2.id_bulan', 'left');
         }elseif ($jenis_trx == 'OUT') {
-            $this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = transaksi_detail.id_kategori');
-            return $this->db->get('pengeluaran_detail_v2')->result();
+            $this->db->join('pengeluaran_detail_v2', 'pengeluaran_detail_v2.id_transaksi = transaksi.id');
+            $this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = pengeluaran_detail_v2.id_kategori');
         }
+
+        $this->db->where('transaksi.id', $id);
+        return $this->db->get('transaksi')->result();
         
     }
 

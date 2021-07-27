@@ -34,12 +34,10 @@ class Transaksi extends CI_Controller
                 'id_transaksi' => $insert_data,
                 'id_kategori'  => $this->input->post('id_kategori'), 
                 'nominal_bayar'=> $this->input->post('nominal_bayar'),
-                'keterangan'   => $this->input->post('keterangan')
+                'catatan'   => $this->input->post('keterangan')
             ];
 
-            $this->Transaksi_model->insert_detail('pengeluaran_detail_v2',$detail);
-
-            
+            $insert = $this->Transaksi_model->insert_detail('pengeluaran_detail_v2',$detail);            
             redirect(site_url('Transaksi/read/'.$insert_data));
         }else{
             $data = [
