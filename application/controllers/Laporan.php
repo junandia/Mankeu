@@ -31,7 +31,8 @@
 
 
 		function santri(){
-			$this->template->load('tema','laporan/santri');
+			show_undevelop();
+			//$this->template->load('tema','laporan/santri');
 		}
 	}
 ?>

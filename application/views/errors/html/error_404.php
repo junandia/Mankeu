@@ -57,6 +57,7 @@ p {
 </head>
 <body>
 	<div id="container">
+		<img src="http://azzainiyyah.sch.id/images/banneratas/gbanner2.jpg">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
 	</div>

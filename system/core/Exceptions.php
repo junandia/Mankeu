@@ -139,6 +139,29 @@ class CI_Exceptions {
 		exit(4); // EXIT_UNKNOWN_FILE
 	}
 
+	public function show_undevelop($page = '', $log_error = TRUE)
+	{
+		if (is_cli())
+		{
+			$heading = 'Under development';
+			$message = 'Fitur sedang dalam proses pengembangan developer atau halaman tidak di temukan.';
+		}
+		else
+		{
+			$heading = 'Under development';
+			$message = 'Fitur sedang dalam proses pengembangan developer atau halaman tidak di temukan.';
+		}
+
+		// By default we log this, but allow a dev to skip it
+		if ($log_error)
+		{
+			log_message('error', $heading.': '.$page);
+		}
+
+		echo $this->show_error($heading, $message, 'error_404', 404);
+		exit(4); // EXIT_UNKNOWN_FILE
+	}
+
 	// --------------------------------------------------------------------
 
 	/**
