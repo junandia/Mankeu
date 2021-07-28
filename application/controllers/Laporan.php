@@ -12,8 +12,19 @@
 		}
 
 		function keuangan(){
-			
-			//$this->template->load('tema','laporan/keuangan');
+			if ($this->input->post()) {
+				$awal  = $this->input->post('tanggal_awal');
+				$akhir = $this->input->post('tanggal_akhir');
+			}else{
+				$awal  = date('Y-m-01');
+				$akhir = date('Y-m-d');
+			}
+			$data = [
+				'data_keuangan' => $this->Laporan_model->laporan_keuangan($awal,$akhir),
+				'awal' => $awal,
+				'akhir' => $akhir
+			];
+			$this->template->load('tema','laporan/keuangan',$data);
 		}
 
 
