@@ -27,5 +27,14 @@ from
 left join sub_kategori sk2 on sk2.id_kategori = kp.id 
 group by kp.id ')->result();
 		}
+
+		function get_pengeluaran($awal,$akhir){
+			$this->db->join('pengeluaran_detail_v2', 'pengeluaran_detail_v2.id_transaksi = transaksi.id');
+			$this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = pengeluaran_detail_v2.id_kategori');
+			$this->db->join('users', 'users.id = transaksi.id_user');
+			$this->db->where(['transaksi.tanggal_trx >='=>$awal, 'transaksi.tanggal_trx <=' => $akhir]);
+			$this->db->order_by('tanggal_trx', 'DESC');
+			return $this->db->get('transaksi')->result();
+		}
 	}
  ?>

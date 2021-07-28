@@ -21,6 +21,7 @@
 			}
 			$data = [
 				'data_keuangan' => $this->Laporan_model->laporan_keuangan($awal,$akhir),
+				'rekap_pengeluaran' => $this->Laporan_model->get_pengeluaran($awal,$akhir),
 				'awal' => $awal,
 				'akhir' => $akhir
 			];

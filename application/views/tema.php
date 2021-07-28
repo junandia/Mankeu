@@ -20,16 +20,25 @@
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url('assets/theme/') ?>css/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?php echo base_url('assets/theme/') ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
     <style type="text/css">
         th {
-            font-size: 15px;
+            font-size: 12px;
         }
         td {
-            font-size: 15px;
+            font-size: 12px;
         }
+
+   .btn-sm-menu {
+      padding: 5px 5px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid #474747;
+   }
+
     </style>
 
 </head>
@@ -457,10 +466,53 @@
 
     <!-- SweetAlert Customized -->
     <script src="<?= base_url('assets/sweetalert/')?>customizedSA.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
 
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('#dataTable_laporan').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fas fa-copy">',
+                    className: 'btn btn-default btn-sm-menu',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fas fa-file-pdf">',
+                    className: 'btn btn-warning btn-sm-menu',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel">',
+                    className: 'btn btn-default btn-sm-menu',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                },
+                ]
+            } );
+        } );
+
         $(document).ready(function() {
             $('.js-santri').select2();
         });
