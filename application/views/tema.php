@@ -513,6 +513,46 @@
             } );
         } );
 
+
+$(document).ready(function() {
+            $('#dataTable_laporan2').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fas fa-copy">',
+                    className: 'btn btn-default btn-sm-menu',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fas fa-file-pdf">',
+                    className: 'btn btn-warning btn-sm-menu',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel">',
+                    className: 'btn btn-default btn-sm-menu',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    }
+                },
+                ]
+            } );
+        } );
+
+
         $(document).ready(function() {
             $('.js-santri').select2();
         });

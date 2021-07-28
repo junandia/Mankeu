@@ -36,5 +36,18 @@ group by kp.id ')->result();
 			$this->db->order_by('tanggal_trx', 'DESC');
 			return $this->db->get('transaksi')->result();
 		}
+
+		function get_pemasukan($awal,$akhir){
+			$this->db->join('transaksi_detail_v2', 'transaksi_detail_v2.id_transaksi = transaksi.id');
+			$this->db->join('sub_kategori', 'sub_kategori.id = transaksi_detail_v2.id_sub_kategori');
+			$this->db->join('kategori_pembayaran', 'kategori_pembayaran.id = sub_kategori.id_kategori');
+			$this->db->join('users', 'users.id = transaksi.id_user');
+			$this->db->join('santri', 'transaksi_detail_v2.id_santri = santri.id');
+			$this->db->join('tahun_angkatan', 'santri.id_angkatan = tahun_angkatan.id');
+			$this->db->join('groups', 'groups.id = tahun_angkatan.id_grup');
+			$this->db->where(['transaksi.tanggal_trx >='=>$awal, 'transaksi.tanggal_trx <=' => $akhir]);
+			$this->db->order_by('tanggal_trx', 'DESC');
+			return $this->db->get('transaksi')->result();
+		}
 	}
  ?>

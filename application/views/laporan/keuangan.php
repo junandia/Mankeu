@@ -114,6 +114,53 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xs-12 w-100 p-3">
+                <div class="box box-warning box-solid">
+                    <div class="table w-100 p-3">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Rekapitulasi Pemasukan</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="w-100 p-3">
+                                    <table class="table" id="dataTable_laporan2">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal Transaksi</th>
+                                                <th>Nama Santri</th>
+                                                <th>Angkatan / Unit</th>
+                                                <th>Sub Kategori</th>
+                                                <th>Kategori</th>
+                                                <th>Nominal Pemasukan</th>
+                                                <th>Catatan</th>
+                                                <th>User</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                foreach ($rekap_pemasukan as $data_rekap_pemasukan) {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $data_rekap_pemasukan->tanggal_trx ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->nama_santri ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->tahun_angkatan.' / '.$data_rekap_pemasukan->name ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->nama_sub_kategori ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->nama_kategori ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->nominal_bayar ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->catatan ?></td>
+                                                <td><?php echo $data_rekap_pemasukan->first_name.' '.$data_rekap_pemasukan->last_name ?></td>
+                                            </tr>
+                                            <?php
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </div>
